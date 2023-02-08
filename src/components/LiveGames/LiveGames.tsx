@@ -1,7 +1,6 @@
-import React from 'react'
+import React from "react";
+import TitleBox from "../TitleBox/TitleBox";
 
 export default function LiveGames() {
-  return (
-    <div>LiveGames</div>
-  )
+    return <TitleBox title="Live games"></TitleBox>;
 }
