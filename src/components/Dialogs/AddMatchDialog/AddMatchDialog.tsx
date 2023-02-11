@@ -50,10 +50,12 @@ export default function AddMatchDialog({ open, setOpen }: IModal) {
         gamesContext.setGames((state) => [
             ...state,
             {
+                id: `${homeTeam}-${awayTeam}_${Date.now()}`,
                 dateAdded: new Date(),
                 homeTeam,
                 awayTeam,
-                score: "",
+                score: "0-0",
+                isLive: false
             },
         ]);
 
