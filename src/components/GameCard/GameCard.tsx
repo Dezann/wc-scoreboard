@@ -42,11 +42,11 @@ export default function GameCard({ game }: { game: IGame }) {
     return (
         <>
             <Paper className="game-card">
+                {isLive && <span>🔴</span>}
                 <div>{`${homeTeam} ${score} ${awayTeam}`}</div>
                 <div className="game-card__body">
                     {isLive && (
                         <>
-                            <span>🔴</span>
                             <Button variant="contained" onClick={editScore}>
                                 Edit score
                             </Button>
