@@ -7,88 +7,82 @@ import {
     DialogActions,
     Button,
 } from "@mui/material";
-import React, { Dispatch, SetStateAction, useContext, useState } from "react";
+import React, {
+    Dispatch,
+    SetStateAction,
+    useContext,
+    useMemo,
+    useState,
+} from "react";
 import GamesContext from "../../../utils/context/GamesContext";
 
-type IAddMatchDialog = {
+type IEditScoreDialog = {
+    score: string;
+    id: string;
     open: boolean;
     setOpen: Dispatch<SetStateAction<boolean>>;
 };
 
-export default function AddMatchDialog({ open, setOpen }: IAddMatchDialog) {
+export default function EditScoreDialog({
+    score,
+    id,
+    open,
+    setOpen,
+}: IEditScoreDialog) {
     const gamesContext = useContext(GamesContext);
-    const initState = {
-        homeTeam: "",
-        awayTeam: "",
-    };
+    const initState = useMemo(() => setInitalScore(), [score]);
     const [formState, setFormState] = useState(initState);
-    const [homeTeamError, setHomeTeamError] = useState("");
-    const [awayTeamError, setAwayTeamError] = useState("");
 
     const handleClose = () => {
         setOpen(false);
     };
 
-    const clearErrors = () => {
-        setHomeTeamError("");
-        setAwayTeamError("");
-    };
+    function setInitalScore() {
+        const splittedScore = score.split("-");
+
+        return {
+            homeTeamScore: Number(splittedScore[0]),
+            awayTeamScore: Number(splittedScore[1]),
+        };
+    }
 
     const handleSubmit = (e: any) => {
         e.preventDefault();
-        const { homeTeam, awayTeam } = formState;
-        clearErrors();
+        const { homeTeamScore, awayTeamScore } = formState;
 
-        if (!homeTeam) {
-            setHomeTeamError("Home team is required");
-            return;
-        } else if (!awayTeam) {
-            setAwayTeamError("Away team is required");
-            return;
-        }
-
-        gamesContext.setGames((state) => [
-            ...state,
-            {
-                id: `${homeTeam}-${awayTeam}_${Date.now()}`,
-                dateAdded: new Date(),
-                homeTeam,
-                awayTeam,
-                score: "0-0",
-                isLive: false
-            },
-        ]);
-
+        gamesContext.games.map((game) => {
+            if (game.id === id) {
+                game.score = `${homeTeamScore}-${awayTeamScore}`;
+            }
+            return game;
+        });
         setFormState(initState);
         setOpen(false);
     };
 
     const handleInputChange = (e: any) => {
         const { name, value } = e.target;
+        console.log(name, value);
         setFormState({
             ...formState,
             [name]: value,
         });
+        console.log({ formState });
     };
     return (
         <Dialog open={open} onClose={handleClose}>
-            <DialogTitle>Add match</DialogTitle>
+            <DialogTitle>Edit match score</DialogTitle>
             <DialogContent>
-                <DialogContentText>
-                    Please fill details of a match
-                </DialogContentText>
                 <TextField
                     autoFocus
                     required
                     margin="dense"
                     id="homeTeam"
-                    name="homeTeam"
+                    name="homeTeamScore"
                     label="Home Team"
-                    error={!!homeTeamError}
-                    helperText={homeTeamError}
-                    value={formState.homeTeam}
+                    value={formState.homeTeamScore}
                     onChange={handleInputChange}
-                    type="text"
+                    type="number"
                     fullWidth
                     variant="standard"
                 />
@@ -97,13 +91,11 @@ export default function AddMatchDialog({ open, setOpen }: IAddMatchDialog) {
                     required
                     margin="dense"
                     id="awayTeam"
-                    name="awayTeam"
-                    value={formState.awayTeam}
+                    name="awayTeamScore"
+                    value={formState.awayTeamScore}
+                    type="number"
                     label="Away Team"
-                    type="text"
                     fullWidth
-                    error={!!awayTeamError}
-                    helperText={awayTeamError}
                     onChange={handleInputChange}
                     variant="standard"
                 />
