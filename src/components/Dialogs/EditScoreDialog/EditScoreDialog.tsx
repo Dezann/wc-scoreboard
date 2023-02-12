@@ -62,12 +62,11 @@ export default function EditScoreDialog({
 
     const handleInputChange = (e: any) => {
         const { name, value } = e.target;
-        console.log(name, value);
+
         setFormState({
             ...formState,
             [name]: value,
         });
-        console.log({ formState });
     };
     return (
         <Dialog open={open} onClose={handleClose}>

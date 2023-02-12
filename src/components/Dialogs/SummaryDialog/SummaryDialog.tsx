@@ -8,7 +8,7 @@ import {
     Slide,
 } from "@mui/material";
 import { TransitionProps } from "@mui/material/transitions";
-import React, { Dispatch, SetStateAction, useContext } from "react";
+import React, { Dispatch, SetStateAction, useContext, useMemo } from "react";
 import GamesContext from "../../../utils/context/GamesContext";
 
 type ISummaryDialog = {
@@ -30,24 +30,41 @@ export default function SummaryDialog({ open, setOpen }: ISummaryDialog) {
 
     const endedGames = context.games.filter((game) => !!game.endDate);
 
-    const sortableGames = endedGames.map((game) => {
-        const { homeTeam, awayTeam, score, id } = game;
-        const splittedScore = game.score.split("-");
-        const totalScore = splittedScore
-            .map((score) => Number(score))
-            .reduce((item, acc) => item + acc);
-        return {
-            homeTeam,
-            awayTeam,
-            score,
-            id,
-            totalScore,
-        };
-    });
+    const sortableGames = useMemo(
+        () =>
+            endedGames.map((game) => {
+                const { homeTeam, awayTeam, score, id, dateAdded } = game;
+                const splittedScore = game.score.split("-");
+                const totalScore = splittedScore
+                    .map((score) => Number(score))
+                    .reduce((item, acc) => item + acc);
+                return {
+                    dateAdded,
+                    homeTeam,
+                    awayTeam,
+                    score,
+                    id,
+                    totalScore,
+                };
+            }),
+        [endedGames]
+    );
 
-    const gamesSortedByScore = sortableGames
-        .sort((a, b) => a.totalScore - b.totalScore)
-        .reverse();
+    const gamesSortedByDate = useMemo(
+        () =>
+            sortableGames
+                .sort((a, b) => a.dateAdded.getTime() - b.dateAdded.getTime())
+                .reverse(),
+        [sortableGames]
+    );
+
+    const gamesSortedByScore = useMemo(
+        () =>
+            gamesSortedByDate
+                .sort((a, b) => a.totalScore - b.totalScore)
+                .reverse(),
+        [gamesSortedByDate]
+    );
 
     function handleClose() {
         setOpen(false);
