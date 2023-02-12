@@ -25,12 +25,12 @@ export default function AllGames() {
                 {games
                     .filter((game) => !game.isLive)
                     .map((game) => (
-                        <GameCard game={game} />
+                        <GameCard key={game.id} game={game} />
                     ))}
                 {endedGames
                     .filter((game) => !game.isLive)
                     .map((game) => (
-                        <GameCard game={game} />
+                        <GameCard key={game.id} game={game} />
                     ))}
             </TitleBox>
             <AddMatchDialog open={dialogOpen} setOpen={setDialogOpen} />

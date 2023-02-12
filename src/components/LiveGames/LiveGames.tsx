@@ -9,7 +9,7 @@ export default function LiveGames() {
     return (
         <TitleBox title="Live games">
             {liveGames.map((game) => (
-                <GameCard game={game} />
+                <GameCard key={game.id} game={game} />
             ))}
         </TitleBox>
     );
