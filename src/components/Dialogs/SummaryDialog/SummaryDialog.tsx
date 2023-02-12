@@ -49,8 +49,6 @@ export default function SummaryDialog({ open, setOpen }: ISummaryDialog) {
         .sort((a, b) => a.totalScore - b.totalScore)
         .reverse();
 
-    const sortedByDate = gamesSortedByScore.map();
-
     function handleClose() {
         setOpen(false);
     }
