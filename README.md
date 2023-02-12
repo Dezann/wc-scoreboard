@@ -1,3 +1,4 @@
+![screenshot](https://i.imgur.com/im1L4mA.png)
 # World cup scoreboard
 
 ## How to run project
