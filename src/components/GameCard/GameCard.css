@@ -1,0 +1,12 @@
+.game-card{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    padding: 1rem;
+    margin-top: 0.5rem;
+}
+
+.game-card__body > button{
+    margin-left: 0.5rem;
+}

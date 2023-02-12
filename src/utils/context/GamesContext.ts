@@ -1,20 +1,23 @@
 import React, { Dispatch, SetStateAction, createContext } from "react";
 
-export type IGame = {
+export interface IGame {
+    id: string;
     dateAdded: Date;
+    startDate?: Date;
+    endDate?: Date;
     homeTeam: string;
     awayTeam: string;
-    score: string; //0-0 format
-  }
-  
-type IGamesContext = {
-    games: IGame[] | null;
-    setGames: Dispatch<SetStateAction<IGame[]>>;
+    score: string; //0-0 format homeTeam - awayTeam
+    isLive: boolean;
 }
 
+type IGamesContext = {
+    games: IGame[];
+    setGames: Dispatch<SetStateAction<IGame[]>>;
+};
 
 const GamesContext = createContext<IGamesContext>({
-    games: null,
+    games: [],
     setGames: () => {},
 });
 
