@@ -8,8 +8,15 @@ import {
     Slide,
 } from "@mui/material";
 import { TransitionProps } from "@mui/material/transitions";
-import React, { Dispatch, SetStateAction, useContext, useMemo } from "react";
+import React, {
+    Dispatch,
+    SetStateAction,
+    useContext,
+    useEffect,
+    useMemo,
+} from "react";
 import GamesContext from "../../../utils/context/GamesContext";
+import useSummary from "../../../utils/hooks/useSummary";
 
 type ISummaryDialog = {
     open: boolean;
@@ -26,45 +33,13 @@ const Transition = React.forwardRef(function Transition(
 });
 
 export default function SummaryDialog({ open, setOpen }: ISummaryDialog) {
-    const context = useContext(GamesContext);
+    const games = useSummary();
 
-    const endedGames = context.games.filter((game) => !!game.endDate);
-
-    const sortableGames = useMemo(
-        () =>
-            endedGames.map((game) => {
-                const { homeTeam, awayTeam, score, id, dateAdded } = game;
-                const splittedScore = game.score.split("-");
-                const totalScore = splittedScore
-                    .map((score) => Number(score))
-                    .reduce((item, acc) => item + acc);
-                return {
-                    dateAdded,
-                    homeTeam,
-                    awayTeam,
-                    score,
-                    id,
-                    totalScore,
-                };
-            }),
-        [endedGames]
-    );
-
-    const gamesSortedByDate = useMemo(
-        () =>
-            sortableGames
-                .sort((a, b) => a.dateAdded.getTime() - b.dateAdded.getTime())
-                .reverse(),
-        [sortableGames]
-    );
-
-    const gamesSortedByScore = useMemo(
-        () =>
-            gamesSortedByDate
-                .sort((a, b) => a.totalScore - b.totalScore)
-                .reverse(),
-        [gamesSortedByDate]
-    );
+    useEffect(() => {
+        if (!games.length) {
+            handleClose()
+        }
+    }, [games])
 
     function handleClose() {
         setOpen(false);
@@ -80,19 +55,14 @@ export default function SummaryDialog({ open, setOpen }: ISummaryDialog) {
             <DialogTitle>{"Matches summary"}</DialogTitle>
             <DialogContent>
                 <DialogContentText id="alert-dialog-slide-description">
-                    {gamesSortedByScore.map(
-                        ({ id, homeTeam, awayTeam, score }) => {
-                            return (
-                                <p
-                                    key={id}
-                                >{`${homeTeam} ${score} ${awayTeam}`}</p>
-                            );
-                        }
-                    )}
+                    {games.map(({ id, homeTeam, awayTeam, score }) => {
+                        return (
+                            <p key={id}>{`${homeTeam} ${score} ${awayTeam}`}</p>
+                        );
+                    })}
                 </DialogContentText>
             </DialogContent>
             <DialogActions>
-                <Button onClick={handleClose}>Export data</Button>
                 <Button onClick={handleClose}>Close</Button>
             </DialogActions>
         </Dialog>

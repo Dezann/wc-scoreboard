@@ -62,14 +62,12 @@ export default function GameCard({ game }: { game: IGame }) {
                     )}
                 </div>
             </Paper>
-            {editScoreDialogVisibility && (
-                <EditScoreDialog
-                    score={score}
-                    id={id}
-                    open={editScoreDialogVisibility}
-                    setOpen={setEditScoreDialogVisibility}
-                />
-            )}
+            <EditScoreDialog
+                score={score}
+                id={id}
+                open={editScoreDialogVisibility}
+                setOpen={setEditScoreDialogVisibility}
+            />
         </>
     );
 }
