@@ -8,13 +8,14 @@ export default function GameCard({ game }: { game: IGame }) {
     const context = useContext(GamesContext);
     const [editScoreDialogVisibility, setEditScoreDialogVisibility] =
         useState(false);
-    const { homeTeam, awayTeam, isLive, score, id } = game;
+    const { homeTeam, awayTeam, isLive, score, id, endDate } = game;
     const { games, setGames } = context;
 
     const endGame = () => {
         const tempGames: IGame[] = games.map((game) => {
             if (game.id === id) {
                 game.isLive = false;
+                game.endDate = new Date();
             }
             return game;
         });
@@ -54,7 +55,7 @@ export default function GameCard({ game }: { game: IGame }) {
                             </Button>
                         </>
                     )}
-                    {score === "0-0" && !isLive && (
+                    {!endDate && !isLive && (
                         <Button variant="contained" onClick={startGame}>
                             Start game
                         </Button>

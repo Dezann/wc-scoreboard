@@ -55,7 +55,8 @@ export default function AddMatchDialog({ open, setOpen }: IAddMatchDialog) {
                 homeTeam,
                 awayTeam,
                 score: "0-0",
-                isLive: false
+                isLive: false,
+                startDate: new Date(),
             },
         ]);
 

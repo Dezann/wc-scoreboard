@@ -85,6 +85,7 @@ export default function EditScoreDialog({
                     type="number"
                     fullWidth
                     variant="standard"
+                    InputProps={{ inputProps: { min: 0, max: 50 } }}
                 />
                 <TextField
                     autoFocus
@@ -98,6 +99,7 @@ export default function EditScoreDialog({
                     fullWidth
                     onChange={handleInputChange}
                     variant="standard"
+                    InputProps={{ inputProps: { min: 0, max: 50 } }}
                 />
             </DialogContent>
             <DialogActions>
