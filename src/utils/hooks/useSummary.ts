@@ -41,5 +41,6 @@ export default function useSummary() {
                 .reverse(),
         [gamesSortedByDate]
     );
+    
     return gamesSortedByScore;
 }
