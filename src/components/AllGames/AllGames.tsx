@@ -1,9 +1,8 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useState } from "react";
 import TitleBox from "../TitleBox/TitleBox";
 import AddMatchDialog from "../Dialogs/AddMatchDialog/AddMatchDialog";
 import GamesContext from "../../utils/context/GamesContext";
 import GameCard from "../GameCard/GameCard";
-import { Divider } from "@mui/material";
 
 export default function AllGames() {
     const [dialogOpen, setDialogOpen] = useState(false);
