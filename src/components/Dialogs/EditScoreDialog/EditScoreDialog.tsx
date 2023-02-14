@@ -11,6 +11,7 @@ import React, {
     Dispatch,
     SetStateAction,
     useContext,
+    useEffect,
     useMemo,
     useState,
 } from "react";
@@ -30,20 +31,27 @@ export default function EditScoreDialog({
     setOpen,
 }: IEditScoreDialog) {
     const gamesContext = useContext(GamesContext);
-    const initState = useMemo(() => setInitalScore(), [score]);
+    const initState = {
+        homeTeamScore: 0,
+        awayTeamScore: 0,
+    };
     const [formState, setFormState] = useState(initState);
 
     const handleClose = () => {
         setOpen(false);
     };
 
+    useEffect(() => {
+        setInitalScore();
+    }, [score]);
+
     function setInitalScore() {
         const splittedScore = score.split("-");
 
-        return {
+        setFormState({
             homeTeamScore: Number(splittedScore[0]),
             awayTeamScore: Number(splittedScore[1]),
-        };
+        });
     }
 
     const handleSubmit = (e: any) => {
